@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Socket Realtime</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<h1>Realtime Socket to server</h1>
+
+<section>
+    <div id="map" style="width:45%"></div>
+    <article id="airContainer">
+        <h2>Air quality</h2>
+        <h3 id="airvalue"></h3>
+        <div class="barContainer">
+          <div id="air" class="bar">
+
+          </div>
+        </div>
+    </article>
+    <article id="lightContainer">
+        <h2>Light</h2>
+        <h3 id="lightvalue"></h3>
+        <div class="barContainer">
+          <div id="light" class="bar">
+
+          </div>
+        </div>
+    </article>
+    <article id="tempContainer">
+        <h2>Temperature</h2>
+        <h3 id="tempvalue">23°</h3>
+        <div class="barContainer">
+          <div id="temp" class="bar">
+
+          </div>
+        </div>
+    </article>
+    <article id="humidityContainer">
+        <h2>Humidity</h2>
+        <h3 id="humvalue"></h3>
+        <div class="barContainer">
+          <div id="hum" class="bar">
+
+          </div>
+        </div>
+    </article>
+</section>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/1.7.3/socket.io.js"></script>
+<script src="socket.js"></script>
+<script src="https://maps.googleapis.com/maps/api/js?callback=myMap&key=AIzaSyA4dEGDdl9DVHqaNd7msS_WbyDV-Jmb1nQ"></script>
+</body>
+
+</html>

@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Weather Data - New Media</title>
+    <link rel="stylesheet" type="text/css" href="style.css">
+</head>
+<body>
+<header>
+    <div>
+        <h1>Weather Data</h1>
+        <h2>A New Media Project</h2>
+    </div>
+</header>
+
+<section>
+    <canvas id="HumChart" width="400" height="400"></canvas>
+    <canvas id="TempChart" width="400" height="400"></canvas>
+    <canvas id="LightChart" width="400" height="400"></canvas>
+    <canvas id="PressChart" width="400" height="400"></canvas>
+    <canvas id="AirChart" width="400" height="400"></canvas>
+</section>
+
+<section class="Location">
+    <p>This data was taken from the following location: <span id="LocationName"></span></p>
+</section>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/1.7.3/socket.io.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.1.4/Chart.bundle.min.js"></script>
+<script src="main.js"></script>
+
+</body>
+</html>

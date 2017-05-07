@@ -1,16 +1,12 @@
 
 module.exports.set = function(app,connection){
-    /*  @api airsensor
-*   @var int          | air_s_id      [record id]
-*   @var date         | air_s_date    [current date]
-*   @var int          | air_s_value   [air quality index slope value]
-*/
+
 app.get('/api/', function(req, res) {
 
   connection.query('SELECT * FROM NMCTData.nmct_table', function(err, rows, fields) {
     if (!err && rows.length > 0){
         res.json(rows);
-        console.log(rows.length)
+       // console.log(rows.length)
     }
     else if (err) {
       res.json('Failed to fetch rows from the table.');
@@ -22,12 +18,29 @@ app.get('/api/', function(req, res) {
 });
 
 
+    app.get('/api/lastday', function(req, res) {
+
+        connection.query('SELECT * FROM NMCTData.nmct_table WHERE Date BETWEEN UNIX_TIMESTAMP() - 86400 AND UNIX_TIMESTAMP()', function(err, rows, fields) {
+            if (!err && rows.length > 0){
+                res.json(rows);
+               // console.log(rows.length)
+            }
+            else if (err) {
+                res.json('Failed to fetch rows from the weather table.');
+            }else if (rows.length === 0){
+                res.json({"No Values found": 0});
+            }
+
+        });
+    });
+
+    
     app.get('/api/latest', function(req, res) {
 
         connection.query('SELECT * FROM NMCTData.nmct_table WHERE ID = (SELECT MAX(ID) FROM NMCTData.nmct_table)', function(err, rows, fields) {
             if (!err && rows.length > 0){
                 res.json(rows);
-                console.log(rows.length)
+               // console.log(rows.length)
             }
             else if (err) {
                 res.json('Failed to fetch rows from the table.');
@@ -37,14 +50,28 @@ app.get('/api/', function(req, res) {
 
         });
     });
-
-
     app.get('/api/lastday', function(req, res) {
 
         connection.query('SELECT * FROM NMCTData.nmct_table WHERE Date BETWEEN UNIX_TIMESTAMP() - 86400 AND UNIX_TIMESTAMP()', function(err, rows, fields) {
             if (!err && rows.length > 0){
                 res.json(rows);
-                console.log(rows.length)
+                //console.log(rows.length)
+            }
+            else if (err) {
+                res.json('Failed to fetch rows from the weather table.');
+            }else if (rows.length === 0){
+                res.json({"No Values found": 0});
+            }
+
+        });
+    });
+
+    app.get('/api/lasthour', function(req, res) {
+
+        connection.query('SELECT * FROM NMCTData.nmct_table WHERE Date BETWEEN UNIX_TIMESTAMP() - 3600 AND UNIX_TIMESTAMP()', function(err, rows, fields) {
+            if (!err && rows.length > 0){
+                res.json(rows);
+               // console.log(rows.length)
             }
             else if (err) {
                 res.json('Failed to fetch rows from the weather table.');

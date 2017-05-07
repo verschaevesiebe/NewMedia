@@ -1,0 +1,85 @@
+body
+{
+    width: 100%;
+    margin: 0 auto;
+    background-color: #eee;
+}
+
+header
+{
+    background-color: #fff;
+    height: 75px;
+    width: 100%;
+    margin: 0 auto;
+
+    -webkit-box-shadow: 10px 10px 69px -12px rgba(0,0,0,0.75);
+    -moz-box-shadow: 10px 10px 69px -12px rgba(0,0,0,0.75);
+    box-shadow: 10px 10px 69px -12px rgba(0,0,0,0.75);
+
+    margin-bottom: 50px;
+
+}
+
+header div
+{
+    margin: 0 auto;
+    display: flex;
+    flex-direction: row;
+    width: 450px;
+    align-items: baseline;
+    top: 50%;
+    transform: translate(0,-50%);
+    position: relative;
+}
+
+h1
+{
+    font-family: Ubuntu, sans-serif;
+    font-weight: 400;
+    margin: 0;
+    font-size: 35px;
+    width: 235px;
+    color: #333;
+}
+
+h2
+{
+    font-family: Ubuntu, sans-serif;
+    margin: 0;
+    font-size: 14px;
+    font-weight: 300;
+    width: 200px;
+    color: #444;
+}
+
+section
+{
+    justify-content: space-around;
+    display: flex;
+    width: 60%;
+    flex-wrap: wrap;
+    margin: 0 auto;
+    padding: 25px;
+}
+
+.Location
+{
+    position: fixed;
+    top: 150px;
+    right: 75px;
+    width: 300px;
+    height: 100%;
+}
+
+.Location p
+{
+    font-family: Ubuntu, sans-serif;
+    font-size: 16px;
+    font-weight: 300;
+    color: #444;
+}
+
+.Location p span
+{
+    font-weight: 400;
+}
