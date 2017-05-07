@@ -1,4 +1,4 @@
-module.exports.set = function(app,conn){
+module.exports.set = function(app,conn,fs){
   var SerialPort = require('serialport');
 
     var details = [];
@@ -27,16 +27,19 @@ module.exports.set = function(app,conn){
 
     switch(parts[0]){
         case "LATITUDE":
-            details['Latitude'] = parts[1];
+            var latitude = parts[1];
+
+            details['Latitude'] = latitude / 1000;
             break;
         case "LONGITUDE":
-            details['Longtitude'] = parts[1];
+            var Longtitude = parts[1];
+            details['Longtitude'] = Longtitude / 1000;
             break;
         case "licht":
-            details['Airquality'] = parts[1];
+            details['Light'] = parts[1];
             break;
         case "lucht":
-            details['Light'] = parts[1];
+            details['Airquality'] = parts[1];
             break;
         case "temp":
             details['Temperature'] = parts[1];
@@ -69,7 +72,7 @@ module.exports.set = function(app,conn){
 
 function Sendtodatabase(detailarray){
     console.log("send");
-    detailarray['Date'] = new Date().getTime();
+    detailarray['Date'] = Math.round((new Date()).getTime() / 1000);
      /*var sql = "INSERT INTO weather_table (`Latitude`,`Longtitude`,`Light`,`Airquality`,`Temperature`,`Pressure`,`Humidity`,`Date`) VALUES ('" + detailarray['Latitude'] + "','" + detailarray['Longtitude'] + "','" + detailarray['Light'] + "','" + detailarray['Airquality'] + "','" + detailarray['Temperature'] + "','" + detailarray['Pressure'] + "','" + detailarray['Humidity'] + "')";
     conn.query(sql, [detailarray], function(err) {
         if (err) throw err;
@@ -77,7 +80,7 @@ function Sendtodatabase(detailarray){
     });
     */
 
-    var sql = "INSERT INTO db_weatherstation.weather_table (`Latitude`,`Longtitude`,`Light`,`Airquality`,`Temperature`,`Pressure`,`Humidity`,`Date`) VALUES ('" + detailarray['Latitude'] + "','" + detailarray['Longtitude'] + "','" + detailarray['Light'] + "','" + detailarray['Airquality'] + "','" + detailarray['Temperature'] + "','" + detailarray['Pressure'] + "','" + detailarray['Humidity'] + "','" + detailarray['Date'] + "')";
+    var sql = "INSERT INTO NMCTData.nmct_table (`Latitude`,`Longtitude`,`Light`,`Airquality`,`Temperature`,`Pressure`,`Humidity`,`Date`) VALUES ('" + detailarray['Latitude'] + "','" + detailarray['Longtitude'] + "','" + detailarray['Light'] + "','" + detailarray['Airquality'] + "','" + detailarray['Temperature'] + "','" + detailarray['Pressure'] + "','" + detailarray['Humidity'] + "','" + detailarray['Date'] + "')";
 
     conn.query(sql, function(err, rows, fields) {
      if (!err){
@@ -91,6 +94,3 @@ function Sendtodatabase(detailarray){
 
 
 };
-
-
-

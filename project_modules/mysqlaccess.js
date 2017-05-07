@@ -1,10 +1,10 @@
 var mysql = require('mysql');
 
 var connection = mysql.createConnection({
-  host     : '192.168.0.170',
-  user     : 'station1',
-  password : 'Emericjood1',
-  database : 'db_weatherstation'
+    host     : 'localhost',
+    user     : 'root',
+    password : 'HowestRules',
+    database : 'NMCTData'
 });
 
 module.exports = {
@@ -24,6 +24,6 @@ connection.connect(function (error) {
 });
  */
 if (connection){
-    console.log("Dikke Connectie gestart");
+    console.log("Connectie gestart");
 }
 
