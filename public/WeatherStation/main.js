@@ -1,15 +1,37 @@
-/**
- * Created by emeric on 5/05/2017.
- */
-
 document.addEventListener("DOMContentLoaded", function() {
-    LoadData();
+    LoadInitialData();
+    window.setInterval(LoadData, 60000);
 });
 
 var lat, lng, air, hum, temp, light, press, time, labels;
+var HumChart = new Chart();
+var AirChart = new Chart();
+var LightChart = new Chart();
+var TempChart = new Chart();
+var PressChart = new Chart();
+
+function LoadInitialData()
+{
+    console.log("loading data");
+
+    $.ajax({
+        url: "../api/lasthour",
+        type: "GET",
+        dataType: "json",
+        success: function (data) {
+            ParseInitialData(data);
+        },
+        error: function()
+        {
+            ErrorLoadingData()
+        }
+    });
+}
 
 function LoadData()
 {
+    console.log("loading data");
+
     $.ajax({
         url: "../api/lasthour",
         type: "GET",
@@ -27,7 +49,7 @@ function LoadData()
 function GetLocation(lat, lng)
 {
     var query = "https://maps.googleapis.com/maps/api/geocode/json?latlng=" +
-        50.90455 + "," + 2.90454 +"&key=AIzaSyAgvXxPoCzUH_xcartL6UhkbkyE6uDeqxs";
+        lat + "," + lng +"&key=AIzaSyAgvXxPoCzUH_xcartL6UhkbkyE6uDeqxs";
 
     $.ajax({
         url: query,
@@ -50,7 +72,7 @@ function ParseLocation(data)
     span.innerText = data["results"][1]["formatted_address"];
 }
 
-function ParseData(data)
+function ParseInitialData(data)
 {
     lat = [];lng = [];air = [];hum = [];temp = [];light = [];press = []; time = []; labels = [];
 
@@ -74,6 +96,45 @@ function ParseData(data)
     DrawCharts();
 }
 
+function ParseData(data)
+{
+    air = [];hum = [];temp = [];light = [];press = [];labels = [];time = [];
+
+    for(var i = 0; i < data.length; i++)
+    {
+        air.push(data[i]["Airquality"]);
+        hum.push(data[i]["Humidity"]);
+        temp.push(data[i]["Temperature"]);
+        light.push(data[i]["Light"]);
+        press.push(data[i]["Pressure"]);
+        time.push(data[i]["Date"]);
+    }
+
+    GenerateLabels(data, time);
+
+    HumChart.data.datasets["0"].data = hum;
+    HumChart.data.labels = labels;
+    HumChart.update();
+
+    AirChart.data.datasets["0"].data = air;
+    AirChart.data.labels = labels;
+    AirChart.update()
+
+    LightChart.data.datasets["0"].data = light;
+    LightChart.data.labels = labels;
+    LightChart.update();
+
+    TempChart.data.datasets["0"].data = temp;
+    TempChart.data.labels = labels;
+    TempChart.update();
+
+    PressChart.data.datasets["0"].data = press;
+    PressChart.data.labels = labels;
+    PressChart.update();
+
+
+}
+
 function GenerateLabels(data,time)
 {
     var d = new Date(time[time.length - 1] * 1000);
@@ -81,33 +142,31 @@ function GenerateLabels(data,time)
     {
         labels[i] = GetLabel(d.getHours(),d.getMinutes(), i);
     }
-    console.log(labels);
     labels.reverse();
     //console.log(labels);
 }
 
-/**
- * @return {string}
- */
 function GetLabel(hour, minutes,i)
 {
+
 
     if (minutes - i < 0){
         var hours = hour - 1;
         var minutes = minutes - i;
         var minutesminhour = minutes + 60;
-        return hour + ":" + minutesminhour;
+        return hours + ":" + minutesminhour;
 
-    }else if (minutes - i > 0 && minutes - i < 10){
-        var hours = hour - 1;
-        var minutes = minutes - i;
-        var minutesminhour = minutes + 60;
-        return hour + ":" + minutesminhour;
     }else{
-        var hours = hour - 1;
+        var hours = hour ;
         var minutes = minutes - i;
-
-        return hours + ":" + minutes;
+        if(minutes < 10)
+        {
+            return hours + ":0" + minutes;
+        }
+        else
+        {
+            return hours + ":" + minutes;
+        }
 
     }
 
@@ -153,7 +212,7 @@ function DrawCharts()
     var tempCanvas = document.getElementById("TempChart");
     var pressCanvas = document.getElementById("PressChart");
 
-    var HumChart = new Chart(humCanvas, {
+    HumChart = new Chart(humCanvas, {
         type: 'line',
         data: {
             labels: labels,
@@ -177,7 +236,7 @@ function DrawCharts()
             }
         }
     });
-    var AirChart = new Chart(airCanvas, {
+    AirChart = new Chart(airCanvas, {
         type: 'line',
         data: {
             labels: labels,
@@ -205,7 +264,7 @@ function DrawCharts()
             }
         }
     });
-    var LightChart = new Chart(lightCanvas, {
+    LightChart = new Chart(lightCanvas, {
         type: 'line',
         data: {
             labels: labels,
@@ -233,7 +292,7 @@ function DrawCharts()
             }
         }
     });
-    var TempChart = new Chart(tempCanvas, {
+    TempChart = new Chart(tempCanvas, {
         type: 'line',
         data: {
             labels: labels,
@@ -261,7 +320,7 @@ function DrawCharts()
             }
         }
     });
-    var PressChart = new Chart(pressCanvas, {
+    PressChart = new Chart(pressCanvas, {
         type: 'line',
         data: {
             labels: labels,
